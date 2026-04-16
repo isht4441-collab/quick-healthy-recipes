@@ -2513,41 +2513,34 @@
     }
   });
 
-  function sendList() {
+  async function sendList() {
     const email = document.getElementById('emailInput').value.trim();
-    if (!email) {
-      document.getElementById('emailInput').focus();
-      return;
-    }
+    if (!email) { document.getElementById('emailInput').focus(); return; }
 
-    // Build the list text
-    let body = 'SHOPPING LIST\n';
-    body += '=============\n\n';
-
+    let body = 'SHOPPING LIST\n=============\n\n';
     if (shoppingItems.length > 0) {
-      shoppingItems.forEach((item, i) => {
-        const tick = item.checked ? '[x]' : '[ ]';
-        body += tick + ' ' + item.text + '\n';
+      shoppingItems.forEach(item => {
+        body += (item.checked ? '[x] ' : '[ ] ') + item.text + '\n';
       });
     } else {
       body += '(No items added)\n';
     }
-
     const notes = document.getElementById('shoppingNotes').value.trim();
-    if (notes) {
-      body += '\n\nNOTES\n=====\n' + notes + '\n';
-    }
-
+    if (notes) body += '\n\nNOTES\n=====\n' + notes + '\n';
     body += '\n\n---\nSent from Quick & Healthy Recipes';
 
-    const subject = 'My Shopping List - Quick & Healthy Recipes';
-    const mailtoLink = 'mailto:' + encodeURIComponent(email)
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(body);
-
-    window.open(mailtoLink, '_blank');
-
     const msg = document.getElementById('sendSuccess');
+    try {
+      const res = await fetch('/api/email/shopping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: email, body })
+      });
+      const data = await res.json();
+      msg.textContent = data.success ? 'Shopping list emailed successfully!' : (data.error || 'Failed to send.');
+    } catch {
+      msg.textContent = 'Failed to send. Please try again.';
+    }
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 5000);
   }
@@ -2647,19 +2640,13 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function sendTimetable() {
+  async function sendTimetable() {
     const email = document.getElementById('ttEmailInput').value.trim();
-    if (!email) {
-      document.getElementById('ttEmailInput').focus();
-      return;
-    }
+    if (!email) { document.getElementById('ttEmailInput').focus(); return; }
 
-    // Save current state first
     saveTimetable();
 
-    let body = 'MEAL TIMETABLE\n';
-    body += '==============\n\n';
-
+    let body = 'MEAL TIMETABLE\n==============\n\n';
     days.forEach(day => {
       body += day.toUpperCase() + '\n';
       meals.forEach(meal => {
@@ -2667,24 +2654,27 @@
         const saved = timetableData[key] || {};
         const dish = saved.dish || '(not set)';
         const time = saved.time || '';
-        const mealLabel = meal.charAt(0).toUpperCase() + meal.slice(1);
-        body += '  ' + mealLabel + ': ' + dish;
+        const label = meal.charAt(0).toUpperCase() + meal.slice(1);
+        body += '  ' + label + ': ' + dish;
         if (time) body += ' at ' + time;
         body += '\n';
       });
       body += '\n';
     });
-
     body += '---\nSent from Quick & Healthy Recipes';
 
-    const subject = 'My Meal Timetable - Quick & Healthy Recipes';
-    const mailtoLink = 'mailto:' + encodeURIComponent(email)
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(body);
-
-    window.open(mailtoLink, '_blank');
-
     const msg = document.getElementById('ttSendSuccess');
+    try {
+      const res = await fetch('/api/email/timetable', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: email, body })
+      });
+      const data = await res.json();
+      msg.textContent = data.success ? 'Meal timetable emailed successfully!' : (data.error || 'Failed to send.');
+    } catch {
+      msg.textContent = 'Failed to send. Please try again.';
+    }
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 5000);
   }
