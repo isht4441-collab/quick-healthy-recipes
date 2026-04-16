@@ -22,10 +22,16 @@ app.get('*', (req, res) => {
 });
 
 async function start() {
-  await getDb();
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
+  try {
+    await getDb();
+    console.log('Database initialized');
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to start:', err);
+    process.exit(1);
+  }
 }
 
 start();
