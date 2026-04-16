@@ -1,20 +1,12 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const db = require('../db/init');
 const requireAuth = require('../middleware/auth');
 
 const router = express.Router();
 router.use(requireAuth);
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 router.post('/shopping', async (req, res) => {
   const { to } = req.body;
@@ -37,15 +29,15 @@ router.post('/shopping', async (req, res) => {
   body += '\n\n---\nSent from Quick & Healthy Recipes';
 
   try {
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
+    await resend.emails.send({
+      from: process.env.RESEND_FROM || 'Quick Recipes <onboarding@resend.dev>',
       to,
       subject: 'My Shopping List - Quick & Healthy Recipes',
       text: body
     });
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to send email. Check your SMTP settings.' });
+    res.status(500).json({ error: 'Failed to send email.' });
   }
 });
 
@@ -77,15 +69,15 @@ router.post('/timetable', async (req, res) => {
   body += '---\nSent from Quick & Healthy Recipes';
 
   try {
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
+    await resend.emails.send({
+      from: process.env.RESEND_FROM || 'Quick Recipes <onboarding@resend.dev>',
       to,
       subject: 'My Meal Timetable - Quick & Healthy Recipes',
       text: body
     });
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to send email. Check your SMTP settings.' });
+    res.status(500).json({ error: 'Failed to send email.' });
   }
 });
 
