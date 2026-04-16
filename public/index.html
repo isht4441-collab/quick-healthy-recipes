@@ -999,78 +999,6 @@
   .col-lunch { background: transparent; }
   .col-dinner { background: transparent; }
 
-  /* ===== AUTH UI ===== */
-  .auth-form {
-    padding: 0 28px 16px;
-  }
-  .auth-form input {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.06);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.76rem;
-    font-weight: 300;
-    outline: none;
-    margin-bottom: 8px;
-    border-radius: 0;
-  }
-  .auth-form input::placeholder { color: rgba(255,255,255,0.3); }
-  .auth-form input:focus { border-color: rgba(255,255,255,0.3); }
-  .auth-form button {
-    width: 100%;
-    padding: 9px;
-    background: rgba(255,255,255,0.12);
-    color: #fff;
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: background 0.15s;
-    margin-bottom: 6px;
-  }
-  .auth-form button:hover { background: rgba(255,255,255,0.2); }
-  .auth-toggle {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.35);
-    text-align: center;
-    cursor: pointer;
-    padding: 4px 0;
-  }
-  .auth-toggle:hover { color: rgba(255,255,255,0.6); }
-  .auth-error {
-    font-size: 0.7rem;
-    color: #e88;
-    padding: 0 28px 8px;
-  }
-  .auth-logged-in {
-    padding: 0 28px 16px;
-  }
-  .auth-logged-in .auth-email {
-    font-size: 0.74rem;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 10px;
-    word-break: break-all;
-  }
-  .auth-logged-in button {
-    background: none;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.5);
-    padding: 7px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.62rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .auth-logged-in button:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.8); }
-
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); }
@@ -1149,13 +1077,6 @@
     <div class="sidebar-item" data-section="timetable" onclick="showTimetable()">
       <span class="sidebar-dot dot-timetable"></span> Meal Timetable
     </div>
-  </div>
-
-  <div class="sidebar-divider"></div>
-
-  <div class="sidebar-section" id="authSection">
-    <div class="sidebar-section-label">Account</div>
-    <div id="authContent"></div>
   </div>
 </aside>
 
@@ -2460,100 +2381,10 @@
 </div>
 
 <script>
-  // ===== AUTH & API =====
-  let authToken = localStorage.getItem('authToken');
-  let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-
-  async function apiFetch(path, options = {}) {
-    const headers = { 'Content-Type': 'application/json', ...options.headers };
-    if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
-    const res = await fetch(path, { ...options, headers });
-    if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
-    return res.json();
-  }
-
-  function isLoggedIn() { return !!authToken; }
-
-  let authMode = 'login';
-
-  function updateAuthUI() {
-    const el = document.getElementById('authContent');
-    if (isLoggedIn() && currentUser) {
-      el.innerHTML = `
-        <div class="auth-logged-in">
-          <div class="auth-email">${currentUser.email}</div>
-          <button onclick="logout()">Log Out</button>
-        </div>`;
-    } else {
-      const isLogin = authMode === 'login';
-      el.innerHTML = `
-        <div id="authError" class="auth-error" style="display:none"></div>
-        <div class="auth-form">
-          <input type="email" id="authEmail" placeholder="Email">
-          <input type="password" id="authPassword" placeholder="Password" onkeydown="if(event.key==='Enter')submitAuth()">
-          <button onclick="submitAuth()">${isLogin ? 'Log In' : 'Sign Up'}</button>
-          <div class="auth-toggle" onclick="toggleAuthMode()">
-            ${isLogin ? 'Need an account? Sign up' : 'Have an account? Log in'}
-          </div>
-        </div>`;
-    }
-  }
-
-  function toggleAuthMode() {
-    authMode = authMode === 'login' ? 'signup' : 'login';
-    updateAuthUI();
-  }
-
-  async function submitAuth() {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
-    const errEl = document.getElementById('authError');
-
-    if (!email || !password) {
-      errEl.textContent = 'Please fill in both fields';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    try {
-      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/signup';
-      const data = await apiFetch(endpoint, {
-        method: 'POST',
-        body: JSON.stringify({ email, password })
-      });
-
-      if (data.error) {
-        errEl.textContent = data.error;
-        errEl.style.display = 'block';
-        return;
-      }
-
-      authToken = data.token;
-      currentUser = data.user;
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      updateAuthUI();
-    } catch (err) {
-      errEl.textContent = 'Something went wrong. Please try again.';
-      errEl.style.display = 'block';
-    }
-  }
-
-  function logout() {
-    authToken = null;
-    currentUser = null;
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('currentUser');
-    shoppingItems = [];
-    timetableData = {};
-    updateAuthUI();
-  }
-
-  // ===== NAV =====
   const allPages = ['vegan','vegetarian','glutenfree','iron','calcium','zinc','iodine','omega'];
-  let shoppingItems = [];
+  let shoppingItems = JSON.parse(localStorage.getItem('shoppingItems') || '[]');
 
-  function saveItemsLocal() {
+  function saveItems() {
     localStorage.setItem('shoppingItems', JSON.stringify(shoppingItems));
   }
 
@@ -2586,74 +2417,51 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async function showShopping() {
+  function showShopping() {
     hideAll();
     document.getElementById('page-shopping').classList.add('visible');
     document.querySelectorAll('.sidebar-item').forEach(item => {
-      if (item.dataset.section === 'shopping') item.classList.add('active');
+      if (item.dataset.section === 'shopping') {
+        item.classList.add('active');
+      }
     });
     closeSidebarMobile();
-
-    if (isLoggedIn()) {
-      try {
-        const data = await apiFetch('/api/shopping');
-        shoppingItems = data.items;
-        document.getElementById('shoppingNotes').value = data.notes;
-      } catch { /* fallback below */ }
-    } else {
-      shoppingItems = JSON.parse(localStorage.getItem('shoppingItems') || '[]');
-      document.getElementById('shoppingNotes').value = localStorage.getItem('shoppingNotes') || '';
-    }
     renderItems();
+    // Restore saved notes
+    const savedNotes = localStorage.getItem('shoppingNotes') || '';
+    document.getElementById('shoppingNotes').value = savedNotes;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async function addItem() {
+  function addItem() {
     const input = document.getElementById('newItemInput');
     const text = input.value.trim();
     if (!text) return;
-
-    if (isLoggedIn()) {
-      try {
-        const item = await apiFetch('/api/shopping/items', { method: 'POST', body: JSON.stringify({ text }) });
-        shoppingItems.push(item);
-      } catch { shoppingItems.push({ text, checked: false }); }
-    } else {
-      shoppingItems.push({ text, checked: false });
-      saveItemsLocal();
-    }
+    shoppingItems.push({ text, checked: false });
+    saveItems();
     input.value = '';
     input.focus();
     renderItems();
   }
 
-  async function toggleItem(index) {
+  function toggleItem(index) {
     shoppingItems[index].checked = !shoppingItems[index].checked;
-    if (isLoggedIn() && shoppingItems[index].id) {
-      try { await apiFetch('/api/shopping/items/' + shoppingItems[index].id, { method: 'PATCH', body: JSON.stringify({ checked: shoppingItems[index].checked }) }); } catch {}
-    } else {
-      saveItemsLocal();
-    }
+    saveItems();
     renderItems();
   }
 
-  async function removeItem(index) {
-    if (isLoggedIn() && shoppingItems[index].id) {
-      try { await apiFetch('/api/shopping/items/' + shoppingItems[index].id, { method: 'DELETE' }); } catch {}
-    }
+  function removeItem(index) {
     shoppingItems.splice(index, 1);
-    if (!isLoggedIn()) saveItemsLocal();
+    saveItems();
     renderItems();
   }
 
-  async function clearAllItems() {
+  function clearAllItems() {
     if (shoppingItems.length === 0) return;
-    if (isLoggedIn()) {
-      try { await apiFetch('/api/shopping/items', { method: 'DELETE' }); } catch {}
-    }
     shoppingItems = [];
+    saveItems();
     document.getElementById('shoppingNotes').value = '';
-    if (!isLoggedIn()) { saveItemsLocal(); localStorage.removeItem('shoppingNotes'); }
+    localStorage.removeItem('shoppingNotes');
     renderItems();
   }
 
@@ -2698,42 +2506,48 @@
     });
   }
 
-  // Auto-save notes (debounced)
-  let notesTimer;
+  // Auto-save notes
   document.addEventListener('input', function(e) {
     if (e.target.id === 'shoppingNotes') {
-      clearTimeout(notesTimer);
-      notesTimer = setTimeout(() => {
-        if (isLoggedIn()) {
-          apiFetch('/api/shopping/notes', { method: 'PUT', body: JSON.stringify({ notes: e.target.value }) }).catch(() => {});
-        } else {
-          localStorage.setItem('shoppingNotes', e.target.value);
-        }
-      }, 500);
+      localStorage.setItem('shoppingNotes', e.target.value);
     }
   });
 
-  async function sendList() {
+  function sendList() {
     const email = document.getElementById('emailInput').value.trim();
-    if (!email) { document.getElementById('emailInput').focus(); return; }
+    if (!email) {
+      document.getElementById('emailInput').focus();
+      return;
+    }
+
+    // Build the list text
+    let body = 'SHOPPING LIST\n';
+    body += '=============\n\n';
+
+    if (shoppingItems.length > 0) {
+      shoppingItems.forEach((item, i) => {
+        const tick = item.checked ? '[x]' : '[ ]';
+        body += tick + ' ' + item.text + '\n';
+      });
+    } else {
+      body += '(No items added)\n';
+    }
+
+    const notes = document.getElementById('shoppingNotes').value.trim();
+    if (notes) {
+      body += '\n\nNOTES\n=====\n' + notes + '\n';
+    }
+
+    body += '\n\n---\nSent from Quick & Healthy Recipes';
+
+    const subject = 'My Shopping List - Quick & Healthy Recipes';
+    const mailtoLink = 'mailto:' + encodeURIComponent(email)
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+    window.open(mailtoLink, '_blank');
 
     const msg = document.getElementById('sendSuccess');
-
-    if (isLoggedIn()) {
-      try {
-        const result = await apiFetch('/api/email/shopping', { method: 'POST', body: JSON.stringify({ to: email }) });
-        msg.textContent = result.error ? result.error : 'Shopping list emailed successfully!';
-      } catch { msg.textContent = 'Failed to send. Please try again.'; }
-    } else {
-      // Fallback to mailto
-      let body = 'SHOPPING LIST\n=============\n\n';
-      shoppingItems.forEach(item => { body += (item.checked ? '[x] ' : '[ ] ') + item.text + '\n'; });
-      const notes = document.getElementById('shoppingNotes').value.trim();
-      if (notes) body += '\n\nNOTES\n=====\n' + notes + '\n';
-      body += '\n\n---\nSent from Quick & Healthy Recipes';
-      window.open('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('My Shopping List - Quick & Healthy Recipes') + '&body=' + encodeURIComponent(body), '_blank');
-      msg.textContent = 'Your email client has been opened with your shopping list.';
-    }
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 5000);
   }
@@ -2742,7 +2556,7 @@
   const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const dayShort = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const meals = ['breakfast','lunch','dinner'];
-  let timetableData = {};
+  let timetableData = JSON.parse(localStorage.getItem('timetableData') || '{}');
 
   function buildTimetable() {
     const tbody = document.getElementById('timetableBody');
@@ -2794,7 +2608,7 @@
     el.style.height = el.scrollHeight + 'px';
   }
 
-  async function saveTimetable() {
+  function saveTimetable() {
     const data = {};
     document.querySelectorAll('.meal-input').forEach(input => {
       const key = input.dataset.key;
@@ -2807,77 +2621,70 @@
       data[key].time = input.value;
     });
     timetableData = data;
-
-    if (isLoggedIn()) {
-      try { await apiFetch('/api/timetable', { method: 'PUT', body: JSON.stringify(data) }); } catch {}
-    } else {
-      localStorage.setItem('timetableData', JSON.stringify(data));
-    }
+    localStorage.setItem('timetableData', JSON.stringify(data));
 
     const msg = document.getElementById('ttSaveMsg');
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 3000);
   }
 
-  async function clearTimetable() {
+  function clearTimetable() {
     timetableData = {};
-    if (isLoggedIn()) {
-      try { await apiFetch('/api/timetable', { method: 'DELETE' }); } catch {}
-    } else {
-      localStorage.removeItem('timetableData');
-    }
+    localStorage.removeItem('timetableData');
     buildTimetable();
   }
 
-  async function showTimetable() {
+  function showTimetable() {
     hideAll();
     document.getElementById('page-timetable').classList.add('visible');
     document.querySelectorAll('.sidebar-item').forEach(item => {
-      if (item.dataset.section === 'timetable') item.classList.add('active');
+      if (item.dataset.section === 'timetable') {
+        item.classList.add('active');
+      }
     });
     closeSidebarMobile();
-
-    if (isLoggedIn()) {
-      try { timetableData = await apiFetch('/api/timetable'); } catch {}
-    } else {
-      timetableData = JSON.parse(localStorage.getItem('timetableData') || '{}');
-    }
     buildTimetable();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async function sendTimetable() {
+  function sendTimetable() {
     const email = document.getElementById('ttEmailInput').value.trim();
-    if (!email) { document.getElementById('ttEmailInput').focus(); return; }
+    if (!email) {
+      document.getElementById('ttEmailInput').focus();
+      return;
+    }
 
-    await saveTimetable();
-    const msg = document.getElementById('ttSendSuccess');
+    // Save current state first
+    saveTimetable();
 
-    if (isLoggedIn()) {
-      try {
-        const result = await apiFetch('/api/email/timetable', { method: 'POST', body: JSON.stringify({ to: email }) });
-        msg.textContent = result.error ? result.error : 'Meal timetable emailed successfully!';
-      } catch { msg.textContent = 'Failed to send. Please try again.'; }
-    } else {
-      let body = 'MEAL TIMETABLE\n==============\n\n';
-      days.forEach(day => {
-        body += day.toUpperCase() + '\n';
-        meals.forEach(meal => {
-          const key = day + '_' + meal;
-          const saved = timetableData[key] || {};
-          const dish = saved.dish || '(not set)';
-          const time = saved.time || '';
-          const label = meal.charAt(0).toUpperCase() + meal.slice(1);
-          body += '  ' + label + ': ' + dish;
-          if (time) body += ' at ' + time;
-          body += '\n';
-        });
+    let body = 'MEAL TIMETABLE\n';
+    body += '==============\n\n';
+
+    days.forEach(day => {
+      body += day.toUpperCase() + '\n';
+      meals.forEach(meal => {
+        const key = day + '_' + meal;
+        const saved = timetableData[key] || {};
+        const dish = saved.dish || '(not set)';
+        const time = saved.time || '';
+        const mealLabel = meal.charAt(0).toUpperCase() + meal.slice(1);
+        body += '  ' + mealLabel + ': ' + dish;
+        if (time) body += ' at ' + time;
         body += '\n';
       });
-      body += '---\nSent from Quick & Healthy Recipes';
-      window.open('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('My Meal Timetable - Quick & Healthy Recipes') + '&body=' + encodeURIComponent(body), '_blank');
-      msg.textContent = 'Your email client has been opened with your meal timetable.';
-    }
+      body += '\n';
+    });
+
+    body += '---\nSent from Quick & Healthy Recipes';
+
+    const subject = 'My Meal Timetable - Quick & Healthy Recipes';
+    const mailtoLink = 'mailto:' + encodeURIComponent(email)
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+    window.open(mailtoLink, '_blank');
+
+    const msg = document.getElementById('ttSendSuccess');
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 5000);
   }
@@ -2893,9 +2700,6 @@
       document.getElementById('sidebarOverlay').classList.remove('open');
     }
   }
-
-  // Init auth UI on load
-  updateAuthUI();
 </script>
 
 </body>
