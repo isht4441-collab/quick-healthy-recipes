@@ -2,6 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const { Resend } = require('resend');
+const { getDb } = require('./db/init');
+
+const authRoutes = require('./routes/auth');
+const nutritionRoutes = require('./routes/nutrition');
+const mealplanRoutes = require('./routes/mealplan');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +16,11 @@ const fromAddress = process.env.RESEND_FROM || 'Quick Recipes <onboarding@resend
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Mount API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/nutrition', nutritionRoutes);
+app.use('/api/mealplan', mealplanRoutes);
 
 // Send shopping list email
 app.post('/api/email/shopping', async (req, res) => {
@@ -52,6 +62,16 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+async function start() {
+  await getDb();
+  console.log('Database initialized');
+
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+start().catch(err => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });

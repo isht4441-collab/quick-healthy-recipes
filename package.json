@@ -7,8 +7,11 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^17.4.2",
     "express": "^4.21.0",
-    "resend": "^6.12.0"
+    "jsonwebtoken": "^9.0.2",
+    "resend": "^6.12.0",
+    "sql.js": "^1.11.0"
   }
 }
