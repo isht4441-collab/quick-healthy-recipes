@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick & Healthy Recipes | Under 10 Minutes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #1b2a4a;
+    --navy-light: #2c3e6b;
+    --navy-muted: #4a5a7a;
+    --black: #1b2a4a;
+    --dark: #2c3e6b;
+    --text: #2a3550;
+    --text-light: #7a849a;
+    --text-muted: #a0a8b8;
+    --border: #dce0e8;
+    --border-light: #eef0f4;
+    --bg: #ffffff;
+    --bg-off: #f8f9fb;
+    --bg-warm: #f4f5f8;
+    --green: #888;
+    --green-light: #aaa;
+    --orange: #888;
+    --orange-light: #aaa;
+    --purple: #888;
+    --purple-light: #aaa;
+    --iron: #888;
+    --iron-light: #aaa;
+    --calcium: #888;
+    --calcium-light: #aaa;
+    --zinc: #888;
+    --zinc-light: #aaa;
+    --iodine: #888;
+    --iodine-light: #aaa;
+    --omega: #888;
+    --omega-light: #aaa;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 300;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 99px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: var(--navy);
+    color: rgba(255,255,255,0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    border-right: none;
+  }
+
+  .sidebar-logo {
+    padding: 36px 28px 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+  .sidebar-logo:hover { opacity: 0.8; }
+  .sidebar-logo h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    line-height: 1.6;
+  }
+  .sidebar-logo p {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.35);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    text-transform: lowercase;
+  }
+
+  .sidebar-section {
+    padding: 24px 0 4px;
+  }
+  .sidebar-section-label {
+    font-size: 0.58rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.25);
+    padding: 0 28px;
+    margin-bottom: 12px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 28px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-left: 2px solid transparent;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.3px;
+  }
+  .sidebar-item:hover {
+    color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.05);
+  }
+  .sidebar-item.active {
+    color: #fff;
+    border-left-color: rgba(255,255,255,0.5);
+    font-weight: 500;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .sidebar-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--text-muted);
+    box-shadow: none;
+  }
+  .dot-vegan, .dot-vegetarian, .dot-glutenfree,
+  .dot-iron, .dot-calcium, .dot-zinc,
+  .dot-iodine, .dot-omega, .dot-shopping, .dot-timetable {
+    background: rgba(255,255,255,0.3);
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 8px 28px;
+  }
+
+  /* ===== MOBILE ===== */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 300;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(2px);
+    z-index: 150;
+  }
+
+  /* ===== MAIN ===== */
+  .main-content {
+    margin-left: 240px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ===== HOME ===== */
+  .home-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .hero {
+    background: var(--bg);
+    color: var(--black);
+    padding: 120px 60px 100px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before, .hero::after { display: none; }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 28px;
+    color: var(--navy);
+    text-shadow: none;
+    padding-bottom: 20px;
+    display: inline-block;
+    border-bottom: 2px solid var(--navy);
+  }
+  .hero p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    max-width: 400px;
+    margin: 0 auto;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.2px;
+  }
+
+  .home-categories {
+    padding: 70px 60px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .home-categories h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--black);
+  }
+  .home-categories > p {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-size: 0.82rem;
+    font-weight: 300;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    margin-bottom: 70px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .category-card {
+    background: var(--bg);
+    padding: 36px 24px 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .category-card::before { display: none; }
+  .category-card:hover {
+    background: var(--bg-warm);
+    transform: none;
+    box-shadow: none;
+  }
+  .category-card .cat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    display: block;
+    opacity: 0.7;
+  }
+  .category-card h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+  .category-card p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .home-footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    border-top: 1px solid var(--border);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ===== RECIPE PAGES ===== */
+  .recipe-page {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    animation: fadeIn 0.4s ease;
+  }
+  .recipe-page.visible { display: flex; }
+
+  .page-header {
+    padding: 60px 60px 50px;
+    color: var(--black);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: visible;
+  }
+  .page-header::before, .page-header::after { display: none; }
+  .page-header .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-light);
+    font-size: 0.72rem;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: color 0.15s;
+    letter-spacing: 0.5px;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    backdrop-filter: none;
+  }
+  .page-header .back-btn:hover { color: var(--black); }
+  .page-header .badge {
+    display: inline-block;
+    padding: 0;
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: none;
+    backdrop-filter: none;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    border-radius: 0;
+  }
+  .page-header h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: var(--black);
+    text-shadow: none;
+    margin-bottom: 10px;
+  }
+  .page-header p {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    font-weight: 300;
+    opacity: 1;
+  }
+
+  .header-vegan, .header-vegetarian, .header-glutenfree,
+  .header-iron, .header-calcium, .header-zinc,
+  .header-iodine, .header-omega {
+    background: var(--bg);
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    padding: 0;
+    max-width: none;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .recipe-card {
+    background: var(--bg);
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    transition: background 0.2s ease;
+    border: none;
+  }
+  .recipe-card:hover {
+    background: var(--bg-warm);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card-banner {
+    height: 0;
+    display: none;
+  }
+
+  .card-body { padding: 32px 36px; }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .card-time {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    background: none;
+    padding: 0;
+    letter-spacing: 0.5px;
+  }
+  .card-tag {
+    font-size: 0.58rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 0;
+    color: var(--navy);
+    background: none;
+    border: 1px solid var(--navy);
+    opacity: 0.5;
+  }
+  .tag-vegan, .tag-vegetarian, .tag-glutenfree,
+  .tag-iron, .tag-calcium, .tag-zinc,
+  .tag-iodine, .tag-omega {
+    background: none;
+    color: var(--navy);
+    border: 1px solid var(--navy);
+  }
+
+  .card-body h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+    color: var(--black);
+  }
+  .card-body .desc {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .ingredients-label, .steps-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .card-body ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 24px;
+    background: none;
+    border-radius: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 16px;
+  }
+  .card-body ul li {
+    font-size: 0.8rem;
+    padding: 3px 0;
+    position: relative;
+    color: var(--text);
+    font-weight: 300;
+    padding-left: 0;
+  }
+  .card-body ul li::before { display: none; }
+
+  .card-body ol {
+    padding-left: 16px;
+    margin: 0;
+    background: none;
+    border-radius: 0;
+    border-left: 1px solid var(--border);
+    padding: 0 0 0 16px;
+    list-style-position: inside;
+    list-style-type: decimal;
+  }
+  .card-body ol li {
+    font-size: 0.8rem;
+    padding: 3px 0;
+    color: var(--text);
+    font-weight: 300;
+  }
+  .card-body ol li::marker {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .page-footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    border-top: 1px solid var(--border);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ===== SHOPPING ===== */
+  .shopping-page {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.4s ease;
+  }
+  .shopping-page.visible { display: flex; }
+
+  .shopping-header {
+    background: var(--bg);
+    color: var(--black);
+    padding: 60px 60px 50px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: visible;
+  }
+  .shopping-header::before { display: none; }
+  .shopping-header .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-light);
+    font-size: 0.72rem;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: color 0.15s;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+  .shopping-header .back-btn:hover { color: var(--black); }
+  .shopping-header h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+  .shopping-header p {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    font-weight: 300;
+    opacity: 1;
+  }
+
+  .shopping-content {
+    padding: 48px 60px;
+    max-width: 700px;
+    flex: 1;
+  }
+
+  .shopping-section {
+    background: var(--bg);
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .shopping-section h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    color: var(--black);
+  }
+  .shopping-section > p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .add-item-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .add-item-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 300;
+    transition: border-color 0.15s;
+    outline: none;
+    background: var(--bg);
+  }
+  .add-item-row input:focus { border-color: var(--black); }
+  .add-item-row button {
+    padding: 12px 24px;
+    background: var(--black);
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .add-item-row button:hover { opacity: 0.7; transform: none; }
+
+  .item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .item-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.82rem;
+    font-weight: 300;
+    transition: opacity 0.2s;
+    margin: 0;
+    border-radius: 0;
+  }
+  .item-list li:last-child { border-bottom: none; }
+  .item-list li:hover { background: none; }
+  .item-list li.checked { opacity: 0.3; text-decoration: line-through; }
+
+  .item-list li input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--black);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .item-list li span { flex: 1; }
+  .item-list li .remove-btn {
+    background: none;
+    border: none;
+    color: #ddd;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+  .item-list li .remove-btn:hover { color: var(--black); background: none; }
+
+  .empty-list {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  .notes-area {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 300;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.7;
+    background: var(--bg);
+  }
+  .notes-area:focus { border-color: var(--black); box-shadow: none; }
+
+  .email-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .email-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.15s;
+    background: var(--bg);
+  }
+  .email-row input:focus { border-color: var(--black); box-shadow: none; }
+  .email-row button {
+    padding: 12px 24px;
+    background: var(--black);
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .email-row button:hover { opacity: 0.7; transform: none; }
+
+  .send-success {
+    display: none;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--bg-off);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
+
+  .clear-all-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+  .clear-all-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .clear-all-btn:hover { border-color: var(--black); color: var(--black); background: none; }
+
+  .item-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-weight: 300;
+  }
+
+  /* ===== TIMETABLE ===== */
+  .timetable-page {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.4s ease;
+  }
+  .timetable-page.visible { display: flex; }
+
+  .timetable-header {
+    background: var(--bg);
+    color: var(--black);
+    padding: 60px 60px 50px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: visible;
+  }
+  .timetable-header::before { display: none; }
+  .timetable-header .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-light);
+    font-size: 0.72rem;
+    font-weight: 400;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: color 0.15s;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+  .timetable-header .back-btn:hover { color: var(--black); }
+  .timetable-header h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+  .timetable-header p {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    font-weight: 300;
+    opacity: 1;
+  }
+
+  .timetable-content {
+    padding: 48px 60px;
+    max-width: 900px;
+    flex: 1;
+  }
+
+  .timetable-card {
+    background: var(--bg);
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .timetable-grid {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .timetable-grid thead th {
+    padding: 16px 14px;
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: rgba(255,255,255,0.8);
+    background: var(--navy);
+    text-align: left;
+    border-bottom: none;
+  }
+  .timetable-grid thead th:first-child {
+    border-radius: 0;
+    width: 100px;
+  }
+  .timetable-grid thead th:last-child { border-radius: 0; }
+
+  .timetable-grid tbody td {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+  .timetable-grid tbody tr:last-child td { border-bottom: none; }
+  .timetable-grid tbody tr:hover td { background: var(--bg-warm); }
+
+  .day-label {
+    font-weight: 500;
+    font-size: 0.78rem;
+    color: var(--black);
+    padding-top: 12px;
+    letter-spacing: 0.3px;
+  }
+  .day-label span {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-top: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .meal-cell { position: relative; }
+  .meal-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--text);
+    padding: 10px 8px;
+    border-radius: 0;
+    transition: background 0.15s;
+    outline: none;
+    resize: none;
+    min-height: 40px;
+  }
+  .meal-input:hover { background: var(--bg-warm); }
+  .meal-input:focus { background: var(--bg-off); }
+  .meal-input::placeholder { color: #ddd; font-size: 0.76rem; }
+
+  .meal-time {
+    display: block;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    padding: 2px 8px 6px;
+    outline: none;
+    transition: background 0.15s;
+    border-radius: 0;
+  }
+  .meal-time:hover { background: var(--bg-warm); }
+  .meal-time:focus { background: var(--bg-off); color: var(--black); }
+
+  .timetable-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-light);
+  }
+  .tt-btn {
+    padding: 10px 22px;
+    border-radius: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    border: none;
+  }
+  .tt-btn-save {
+    background: var(--black);
+    color: white;
+  }
+  .tt-btn-save:hover { opacity: 0.7; transform: none; }
+  .tt-btn-clear {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .tt-btn-clear:hover { border-color: var(--black); color: var(--black); background: none; }
+
+  .tt-save-msg {
+    display: none;
+    padding: 12px 16px;
+    background: var(--bg-off);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    font-size: 0.78rem;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
+  .tt-legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tt-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+  }
+  .tt-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 0;
+  }
+  .legend-breakfast { background: var(--bg-warm); border: 1px solid var(--border); }
+  .legend-lunch { background: var(--bg-off); border: 1px solid var(--border); }
+  .legend-dinner { background: var(--bg); border: 1px solid var(--border); }
+
+  .col-breakfast { background: transparent; }
+  .col-lunch { background: transparent; }
+  .col-dinner { background: transparent; }
+
+  /* ===== AUTH UI ===== */
+  .auth-form {
+    padding: 0 28px 16px;
+  }
+  .auth-form input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 300;
+    outline: none;
+    margin-bottom: 8px;
+    border-radius: 0;
+  }
+  .auth-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .auth-form input:focus { border-color: rgba(255,255,255,0.3); }
+  .auth-form button {
+    width: 100%;
+    padding: 9px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 6px;
+  }
+  .auth-form button:hover { background: rgba(255,255,255,0.2); }
+  .auth-toggle {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .auth-toggle:hover { color: rgba(255,255,255,0.6); }
+  .auth-error {
+    font-size: 0.7rem;
+    color: #e88;
+    padding: 0 28px 8px;
+  }
+  .auth-logged-in {
+    padding: 0 28px 16px;
+  }
+  .auth-logged-in .auth-email {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 10px;
+    word-break: break-all;
+  }
+  .auth-logged-in button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.5);
+    padding: 7px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .auth-logged-in button:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.8); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.open { display: block; }
+    .hamburger { display: flex; }
+    .main-content { margin-left: 0; }
+    .hero { padding: 80px 28px 60px; }
+    .home-categories { padding: 40px 24px; }
+    .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-header { padding: 40px 28px 32px; }
+    .recipe-grid { grid-template-columns: 1fr; }
+    .timetable-content { padding: 24px; }
+    .timetable-grid { font-size: 0.76rem; }
+    .timetable-grid thead th { padding: 12px 8px; font-size: 0.56rem; }
+    .day-label { font-size: 0.72rem; }
+    .shopping-content { padding: 24px; }
+    .shopping-section { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE HAMBURGER -->
+<button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo" onclick="showHome()">
+    <h1>Quick & Healthy</h1>
+    <p>Recipes under 10 min</p>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Diet</div>
+    <div class="sidebar-item" data-section="vegan" onclick="showPage('vegan')">
+      <span class="sidebar-dot dot-vegan"></span> Vegan
+    </div>
+    <div class="sidebar-item" data-section="vegetarian" onclick="showPage('vegetarian')">
+      <span class="sidebar-dot dot-vegetarian"></span> Vegetarian
+    </div>
+    <div class="sidebar-item" data-section="glutenfree" onclick="showPage('glutenfree')">
+      <span class="sidebar-dot dot-glutenfree"></span> Gluten Free
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Nutrient Boost</div>
+    <div class="sidebar-item" data-section="iron" onclick="showPage('iron')">
+      <span class="sidebar-dot dot-iron"></span> High in Iron
+    </div>
+    <div class="sidebar-item" data-section="calcium" onclick="showPage('calcium')">
+      <span class="sidebar-dot dot-calcium"></span> High in Calcium
+    </div>
+    <div class="sidebar-item" data-section="zinc" onclick="showPage('zinc')">
+      <span class="sidebar-dot dot-zinc"></span> High in Zinc
+    </div>
+    <div class="sidebar-item" data-section="iodine" onclick="showPage('iodine')">
+      <span class="sidebar-dot dot-iodine"></span> High in Iodine
+    </div>
+    <div class="sidebar-item" data-section="omega" onclick="showPage('omega')">
+      <span class="sidebar-dot dot-omega"></span> High in Omega-3
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Tools</div>
+    <div class="sidebar-item" data-section="shopping" onclick="showShopping()">
+      <span class="sidebar-dot dot-shopping"></span> Shopping List
+    </div>
+    <div class="sidebar-item" data-section="timetable" onclick="showTimetable()">
+      <span class="sidebar-dot dot-timetable"></span> Meal Timetable
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section" id="authSection">
+    <div class="sidebar-section-label">Account</div>
+    <div id="authContent"></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <!-- ===== HOME PAGE ===== -->
+  <div class="home-page" id="homePage">
+    <div class="hero">
+      <h1>Quick & Healthy Recipes</h1>
+      <p>Delicious meals ready in under 10 minutes. Simple ingredients, big flavours. Choose a category to get started.</p>
+    </div>
+
+    <div class="home-categories">
+      <h2>Browse by Diet</h2>
+      <p>Find recipes tailored to your dietary preferences</p>
+      <div class="category-grid">
+        <div class="category-card cat-vegan" onclick="showPage('vegan')">
+          <div class="cat-icon">&#127793;</div>
+          <h3>Vegan</h3>
+          <p>100% plant-based, 100% delicious</p>
+        </div>
+        <div class="category-card cat-vegetarian" onclick="showPage('vegetarian')">
+          <div class="cat-icon">&#129382;</div>
+          <h3>Vegetarian</h3>
+          <p>Hearty meals without the meat</p>
+        </div>
+        <div class="category-card cat-glutenfree" onclick="showPage('glutenfree')">
+          <div class="cat-icon">&#127�;</div>
+          <h3>Gluten Free</h3>
+          <p>No gluten, no compromise</p>
+        </div>
+      </div>
+
+      <h2>Browse by Nutrient</h2>
+      <p>Target specific nutrients your body needs</p>
+      <div class="category-grid">
+        <div class="category-card cat-iron" onclick="showPage('iron')">
+          <div class="cat-icon">&#129529;</div>
+          <h3>High in Iron</h3>
+          <p>Boost energy & prevent fatigue</p>
+        </div>
+        <div class="category-card cat-calcium" onclick="showPage('calcium')">
+          <div class="cat-icon">&#129471;</div>
+          <h3>High in Calcium</h3>
+          <p>Strong bones & healthy teeth</p>
+        </div>
+        <div class="category-card cat-zinc" onclick="showPage('zinc')">
+          <div class="cat-icon">&#129516;</div>
+          <h3>High in Zinc</h3>
+          <p>Support your immune system</p>
+        </div>
+        <div class="category-card cat-iodine" onclick="showPage('iodine')">
+          <div class="cat-icon">&#127754;</div>
+          <h3>High in Iodine</h3>
+          <p>Fuel your thyroid function</p>
+        </div>
+        <div class="category-card cat-omega" onclick="showPage('omega')">
+          <div class="cat-icon">&#128031;</div>
+          <h3>High in Omega-3</h3>
+          <p>Healthy fats for brain & heart</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== VEGAN PAGE ===== -->
+  <div class="recipe-page" id="page-vegan">
+    <div class="page-header header-vegan">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">Vegan</span>
+      <h2>Plant-Powered Plates</h2>
+      <p>100% plant-based, 100% delicious</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Mango Avocado Salsa Bowl</h3>
+          <p class="desc">A tropical, creamy bowl bursting with fresh flavours — no cooking required.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 ripe mango, diced</li>
+            <li>1 avocado, diced</li>
+            <li>1/2 cup cherry tomatoes, halved</li>
+            <li>Juice of 1 lime</li>
+            <li>Fresh coriander, salt & chilli flakes</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Dice the mango, avocado and tomatoes into a bowl.</li>
+            <li>Squeeze lime juice over the top and toss gently.</li>
+            <li>Season with salt, chilli flakes and fresh coriander.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Spicy Peanut Butter Noodles</h3>
+          <p class="desc">Silky noodles tossed in a rich, spicy peanut sauce — comfort food in minutes.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g rice noodles</li>
+            <li>3 tbsp peanut butter</li>
+            <li>2 tbsp soy sauce</li>
+            <li>1 tbsp sriracha</li>
+            <li>1 tbsp maple syrup</li>
+            <li>Spring onions & sesame seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Cook rice noodles per packet instructions (3-4 min), then drain.</li>
+            <li>Whisk peanut butter, soy sauce, sriracha and maple syrup with 2 tbsp warm water.</li>
+            <li>Toss noodles in the sauce. Top with spring onions and sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Chickpea & Spinach Stir-Fry</h3>
+          <p class="desc">A protein-packed skillet dish with warm spices and leafy greens.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 can chickpeas, drained</li>
+            <li>2 cups fresh spinach</li>
+            <li>2 cloves garlic, minced</li>
+            <li>1 tsp cumin & smoked paprika</li>
+            <li>1 tbsp olive oil, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Heat olive oil in a pan. Add garlic and cook 30 seconds.</li>
+            <li>Add chickpeas, cumin and paprika. Stir-fry 4 minutes until golden.</li>
+            <li>Toss in spinach and stir until wilted. Season and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Berry Coconut Smoothie Bowl</h3>
+          <p class="desc">A thick, frosty smoothie bowl loaded with antioxidants and crunch.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 cup frozen mixed berries</li>
+            <li>1 frozen banana</li>
+            <li>1/2 cup coconut milk</li>
+            <li>Toppings: granola, coconut flakes, chia seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Blend frozen berries, banana and coconut milk until thick and smooth.</li>
+            <li>Pour into a bowl.</li>
+            <li>Top with granola, coconut flakes and chia seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Smashed Edamame Toast</h3>
+          <p class="desc">Creamy, bright green edamame spread on crunchy toast with a citrus kick.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 cup shelled edamame (defrosted)</li>
+            <li>1 tbsp tahini</li>
+            <li>Juice of 1 lemon</li>
+            <li>2 slices sourdough bread</li>
+            <li>Chilli flakes, sesame seeds, salt</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Mash edamame with a fork, then stir in tahini, lemon juice and salt.</li>
+            <li>Toast the sourdough until golden.</li>
+            <li>Spread edamame mixture on toast. Top with chilli flakes and sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-vegan">Vegan</span>
+          </div>
+          <h3>Black Bean & Corn Quesadilla</h3>
+          <p class="desc">Crispy tortillas stuffed with spiced beans, sweet corn and fresh lime.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 flour tortillas</li>
+            <li>1 can black beans, drained & mashed</li>
+            <li>1/2 cup sweetcorn</li>
+            <li>1 tsp cumin, pinch of chilli</li>
+            <li>Lime wedges, avocado, coriander</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Mix mashed beans with corn, cumin and chilli.</li>
+            <li>Spread filling on one tortilla, top with the other. Pan-fry 3 min each side.</li>
+            <li>Slice into wedges. Serve with avocado, lime and coriander.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== VEGETARIAN PAGE ===== -->
+  <div class="recipe-page" id="page-vegetarian">
+    <div class="page-header header-vegetarian">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">Vegetarian</span>
+      <h2>Veggie Favourites</h2>
+      <p>Hearty, satisfying meals without the meat</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Caprese Flatbread</h3>
+          <p class="desc">Warm, crispy flatbread with melted mozzarella, fresh tomato and basil.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 naan or flatbreads</li>
+            <li>1 ball fresh mozzarella, sliced</li>
+            <li>2 ripe tomatoes, sliced</li>
+            <li>Fresh basil leaves</li>
+            <li>Balsamic glaze, olive oil, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Place flatbreads under the grill for 2 minutes until lightly crisp.</li>
+            <li>Layer mozzarella and tomato slices. Grill 3 more minutes until cheese melts.</li>
+            <li>Top with fresh basil, balsamic glaze and olive oil.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Egg Fried Rice</h3>
+          <p class="desc">A classic one-pan dish — fluffy rice, scrambled egg and a punch of soy.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 cups cooked rice (day-old works best)</li>
+            <li>2 eggs</li>
+            <li>1/2 cup frozen peas</li>
+            <li>2 tbsp soy sauce</li>
+            <li>1 tbsp sesame oil, spring onions</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Heat sesame oil in a wok. Scramble the eggs and set aside.</li>
+            <li>Stir-fry rice and peas on high heat for 3 minutes.</li>
+            <li>Add soy sauce and egg back in. Toss and serve with spring onions.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Greek Yoghurt Veggie Wrap</h3>
+          <p class="desc">A cool, crunchy wrap with creamy tzatziki and crisp vegetables.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 large flour tortillas</li>
+            <li>1/2 cup Greek yoghurt</li>
+            <li>1 cucumber, sliced</li>
+            <li>1/2 cup cherry tomatoes, halved</li>
+            <li>Feta cheese, olives, dried oregano</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Spread Greek yoghurt across each tortilla.</li>
+            <li>Layer cucumber, tomatoes, crumbled feta and olives.</li>
+            <li>Sprinkle oregano, roll tightly and slice in half.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 9 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Cheesy Garlic Mushrooms on Toast</h3>
+          <p class="desc">Golden, buttery mushrooms with garlic and melted cheese on crunchy toast.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>250g mushrooms, sliced</li>
+            <li>3 cloves garlic, minced</li>
+            <li>1 tbsp butter</li>
+            <li>1/2 cup grated cheddar or gruyere</li>
+            <li>2 slices sourdough, parsley</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Melt butter. Saute garlic 30 seconds, add mushrooms. Cook 5 minutes.</li>
+            <li>Toast the sourdough until golden.</li>
+            <li>Pile mushrooms on toast, top with cheese and grill 1 minute. Garnish with parsley.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Halloumi & Pepper Stir-Fry</h3>
+          <p class="desc">Salty, golden halloumi with colourful peppers and a honey-soy glaze.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g halloumi, sliced into strips</li>
+            <li>1 red and 1 yellow pepper, sliced</li>
+            <li>1 tbsp honey</li>
+            <li>1 tbsp soy sauce</li>
+            <li>1 tbsp olive oil, sesame seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Pan-fry halloumi 2 minutes each side until golden. Set aside.</li>
+            <li>Stir-fry peppers for 3 minutes on high heat.</li>
+            <li>Add halloumi back, drizzle honey and soy sauce. Toss and top with sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-vegetarian"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-vegetarian">Vegetarian</span>
+          </div>
+          <h3>Ricotta & Honey Toast</h3>
+          <p class="desc">Creamy ricotta on warm toast with honey, walnuts and fresh figs.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 slices thick bread</li>
+            <li>1/2 cup ricotta cheese</li>
+            <li>2 tbsp honey</li>
+            <li>Handful of walnuts, crushed</li>
+            <li>2 fresh figs, quartered (or berries)</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Toast bread until golden and crispy.</li>
+            <li>Spread a thick layer of ricotta on each slice.</li>
+            <li>Top with figs, crushed walnuts and a generous drizzle of honey.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== GLUTEN FREE PAGE ===== -->
+  <div class="recipe-page" id="page-glutenfree">
+    <div class="page-header header-glutenfree">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">Gluten Free</span>
+      <h2>Gluten-Free Goodness</h2>
+      <p>No gluten, no compromise on taste</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Lemon Herb Salmon</h3>
+          <p class="desc">Tender pan-seared salmon with a bright lemon and herb finish.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 salmon fillets</li>
+            <li>1 lemon (juice + zest)</li>
+            <li>2 cloves garlic, minced</li>
+            <li>Fresh dill or parsley</li>
+            <li>1 tbsp olive oil, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Heat olive oil in a pan over medium-high heat.</li>
+            <li>Season salmon. Sear skin-side down 4 min, flip and cook 3 more.</li>
+            <li>Add garlic for the last minute. Squeeze lemon and garnish with herbs.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Sweet Potato & Black Bean Tacos</h3>
+          <p class="desc">Smoky, spiced sweet potato and beans in crispy corn tortillas.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 medium sweet potato, grated</li>
+            <li>1 can black beans, drained</li>
+            <li>Corn tortillas (gluten-free)</li>
+            <li>1 tsp cumin, smoked paprika, chilli</li>
+            <li>Lime, avocado, coriander</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Saute grated sweet potato in olive oil for 4 minutes until soft.</li>
+            <li>Add black beans and spices. Cook 2 more minutes.</li>
+            <li>Warm corn tortillas, fill and top with avocado, lime and coriander.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Tuna & White Bean Salad</h3>
+          <p class="desc">A Mediterranean-style salad that's fresh, filling and ready in no time.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 can tuna, drained</li>
+            <li>1 can white beans, drained</li>
+            <li>1/2 red onion, thinly sliced</li>
+            <li>Handful of rocket/arugula</li>
+            <li>Olive oil, lemon juice, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Combine tuna, white beans, red onion and rocket in a bowl.</li>
+            <li>Drizzle with olive oil and lemon juice.</li>
+            <li>Toss gently, season and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 10 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Thai Coconut Chicken Soup</h3>
+          <p class="desc">A fragrant, creamy coconut broth with tender chicken and a kick of chilli.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g chicken breast, thinly sliced</li>
+            <li>1 can coconut milk</li>
+            <li>1 tbsp Thai red curry paste (check GF)</li>
+            <li>1 tbsp fish sauce</li>
+            <li>Lime juice, fresh basil or coriander</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Bring coconut milk and curry paste to a simmer, stirring to combine.</li>
+            <li>Add chicken slices and cook 5-6 minutes until done.</li>
+            <li>Stir in fish sauce and lime juice. Top with fresh herbs.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Prawn & Avocado Rice Paper Rolls</h3>
+          <p class="desc">Light, fresh rolls packed with prawns, avocado and crunchy veg.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>6 rice paper wrappers</li>
+            <li>12 cooked prawns</li>
+            <li>1 avocado, sliced</li>
+            <li>1 carrot, julienned</li>
+            <li>Fresh mint, sweet chilli dipping sauce</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Dip rice paper in warm water 10 seconds until pliable.</li>
+            <li>Fill with prawns, avocado, carrot and mint.</li>
+            <li>Roll tightly, tucking in the sides. Serve with sweet chilli sauce.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-glutenfree"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 9 min</span>
+            <span class="card-tag tag-glutenfree">Gluten Free</span>
+          </div>
+          <h3>Steak & Rocket Salad</h3>
+          <p class="desc">Juicy seared steak strips on peppery rocket with parmesan shavings.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g sirloin steak</li>
+            <li>2 large handfuls of rocket</li>
+            <li>Parmesan shavings</li>
+            <li>1 tbsp olive oil</li>
+            <li>Balsamic vinegar, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Season steak. Sear in a hot pan 3 min each side. Rest 2 min.</li>
+            <li>Slice thinly against the grain.</li>
+            <li>Arrange rocket, top with steak and parmesan. Drizzle with balsamic.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== IRON PAGE ===== -->
+  <div class="recipe-page" id="page-iron">
+    <div class="page-header header-iron">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">High in Iron</span>
+      <h2>Iron-Rich Recipes</h2>
+      <p>Boost your energy with iron-packed meals</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iron"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-iron">Iron</span>
+          </div>
+          <h3>Seared Liver & Onions</h3>
+          <p class="desc">Quick-seared chicken livers with caramelised onions — one of the richest iron sources.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>250g chicken livers, trimmed</li>
+            <li>1 onion, thinly sliced</li>
+            <li>1 tbsp butter</li>
+            <li>1 tsp thyme</li>
+            <li>Salt, pepper & splash of balsamic</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Melt butter. Cook onions 3 minutes until softened.</li>
+            <li>Push onions aside, add livers. Sear 2 min each side.</li>
+            <li>Add thyme and balsamic. Toss and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iron"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-iron">Iron</span>
+          </div>
+          <h3>Lentil & Spinach Warm Salad</h3>
+          <p class="desc">Earthy lentils and wilted spinach with a tangy mustard dressing.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 can lentils, drained</li>
+            <li>2 cups baby spinach</li>
+            <li>1 tbsp Dijon mustard</li>
+            <li>1 tbsp olive oil + 1 tbsp red wine vinegar</li>
+            <li>Salt, pepper, goat cheese (optional)</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Warm lentils in a pan with olive oil for 3 minutes.</li>
+            <li>Toss in spinach and stir until just wilted.</li>
+            <li>Whisk mustard and vinegar, drizzle over the top. Season and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iron"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 9 min</span>
+            <span class="card-tag tag-iron">Iron</span>
+          </div>
+          <h3>Steak Bites with Broccoli</h3>
+          <p class="desc">Juicy beef bites with tender broccoli in a garlic-butter sauce.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g sirloin steak, cubed</li>
+            <li>2 cups broccoli florets</li>
+            <li>2 cloves garlic, minced</li>
+            <li>1 tbsp butter + 1 tbsp soy sauce</li>
+            <li>Salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Sear steak cubes in a hot pan 3 minutes. Set aside.</li>
+            <li>Stir-fry broccoli 4 minutes. Add garlic for the last minute.</li>
+            <li>Return steak, add butter and soy sauce. Toss and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iron"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-iron">Iron</span>
+          </div>
+          <h3>Dark Chocolate & Pumpkin Seed Trail Mix</h3>
+          <p class="desc">A no-cook iron-rich snack with dark chocolate, seeds and dried fruit.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>50g dark chocolate (70%+), broken</li>
+            <li>1/4 cup pumpkin seeds</li>
+            <li>1/4 cup cashews</li>
+            <li>2 tbsp dried apricots, chopped</li>
+            <li>Pinch of sea salt</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Combine all ingredients in a bowl.</li>
+            <li>Toss with a pinch of sea salt.</li>
+            <li>Portion into jars or bags for grab-and-go snacking.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== CALCIUM PAGE ===== -->
+  <div class="recipe-page" id="page-calcium">
+    <div class="page-header header-calcium">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">High in Calcium</span>
+      <h2>Calcium-Rich Recipes</h2>
+      <p>Strong bones start with what you eat</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-calcium"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-calcium">Calcium</span>
+          </div>
+          <h3>Yoghurt Parfait with Almonds</h3>
+          <p class="desc">Layers of creamy yoghurt, crunchy almonds and sweet berries.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 cup Greek yoghurt</li>
+            <li>1/4 cup almonds, roughly chopped</li>
+            <li>1/2 cup mixed berries</li>
+            <li>2 tbsp honey</li>
+            <li>1 tbsp chia seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Layer yoghurt, berries and almonds in a glass or bowl.</li>
+            <li>Repeat layers.</li>
+            <li>Drizzle with honey and sprinkle chia seeds on top.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-calcium"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-calcium">Calcium</span>
+          </div>
+          <h3>Cheesy Kale & White Bean Saute</h3>
+          <p class="desc">Garlicky kale and creamy beans topped with melted parmesan.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>3 cups kale, stems removed, chopped</li>
+            <li>1 can white beans, drained</li>
+            <li>2 cloves garlic, minced</li>
+            <li>1/4 cup grated parmesan</li>
+            <li>1 tbsp olive oil, chilli flakes</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Heat olive oil, saute garlic 30 seconds. Add kale, stir until wilted (3 min).</li>
+            <li>Add white beans and cook 2 more minutes.</li>
+            <li>Top with parmesan and chilli flakes. Serve warm.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-calcium"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-calcium">Calcium</span>
+          </div>
+          <h3>Sardines on Toast with Lemon</h3>
+          <p class="desc">Bone-in sardines on crusty toast — a calcium powerhouse.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 tin sardines in olive oil</li>
+            <li>2 slices crusty bread</li>
+            <li>1 lemon</li>
+            <li>1 tbsp capers</li>
+            <li>Fresh parsley, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Toast bread until golden and crisp.</li>
+            <li>Arrange sardines on toast, mashing slightly.</li>
+            <li>Squeeze lemon, scatter capers and parsley. Season and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-calcium"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-calcium">Calcium</span>
+          </div>
+          <h3>Tofu & Sesame Stir-Fry</h3>
+          <p class="desc">Crispy tofu cubes in a sticky sesame glaze with steamed greens.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g firm tofu, cubed & patted dry</li>
+            <li>2 tbsp soy sauce</li>
+            <li>1 tbsp sesame oil</li>
+            <li>1 tbsp honey or maple syrup</li>
+            <li>Sesame seeds, steamed pak choi</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Pan-fry tofu in sesame oil on high heat 4 minutes until crispy.</li>
+            <li>Add soy sauce and honey, toss to glaze 1 minute.</li>
+            <li>Serve over steamed pak choi, topped with sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== ZINC PAGE ===== -->
+  <div class="recipe-page" id="page-zinc">
+    <div class="page-header header-zinc">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">High in Zinc</span>
+      <h2>Zinc-Packed Recipes</h2>
+      <p>Support your immune system with every bite</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-zinc"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-zinc">Zinc</span>
+          </div>
+          <h3>Garlic Butter Prawns</h3>
+          <p class="desc">Succulent prawns sizzling in garlic butter with a squeeze of lemon.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>300g king prawns, peeled</li>
+            <li>3 cloves garlic, minced</li>
+            <li>2 tbsp butter</li>
+            <li>Juice of 1 lemon</li>
+            <li>Fresh parsley, chilli flakes</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Melt butter. Add garlic and chilli flakes, cook 30 seconds.</li>
+            <li>Add prawns in a single layer. Cook 2-3 min each side until pink.</li>
+            <li>Squeeze lemon, scatter parsley and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-zinc"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 9 min</span>
+            <span class="card-tag tag-zinc">Zinc</span>
+          </div>
+          <h3>Lamb Mince Lettuce Cups</h3>
+          <p class="desc">Spiced lamb mince in crisp lettuce cups with yoghurt drizzle.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>250g lamb mince</li>
+            <li>1 tsp cumin, coriander & paprika</li>
+            <li>1 clove garlic, minced</li>
+            <li>Little gem lettuce leaves</li>
+            <li>Greek yoghurt, fresh mint, pomegranate seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Brown lamb mince 5 minutes, breaking it up as it cooks.</li>
+            <li>Add garlic and spices. Cook 2 more minutes.</li>
+            <li>Spoon into lettuce cups. Top with yoghurt, mint and pomegranate.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-zinc"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-zinc">Zinc</span>
+          </div>
+          <h3>Pumpkin Seed & Cashew Butter Bites</h3>
+          <p class="desc">No-bake energy bites packed with zinc-rich seeds and nuts.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1/2 cup pumpkin seeds</li>
+            <li>1/4 cup cashew butter</li>
+            <li>2 tbsp oats</li>
+            <li>1 tbsp honey</li>
+            <li>Pinch of salt, dark chocolate chips</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Mix all ingredients together in a bowl.</li>
+            <li>Roll into small balls (makes about 8).</li>
+            <li>Chill a few minutes or eat straight away.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-zinc"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-zinc">Zinc</span>
+          </div>
+          <h3>Turkey & Chickpea Skillet</h3>
+          <p class="desc">Lean turkey mince with chickpeas in a smoky, tomatoey pan sauce.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>200g turkey mince</li>
+            <li>1 can chickpeas, drained</li>
+            <li>1/2 cup passata</li>
+            <li>1 tsp smoked paprika</li>
+            <li>1 tbsp olive oil, salt & pepper, parsley</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Brown turkey mince in olive oil for 4 minutes.</li>
+            <li>Add chickpeas, passata and paprika. Simmer 3 minutes.</li>
+            <li>Season, scatter parsley and serve.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== IODINE PAGE ===== -->
+  <div class="recipe-page" id="page-iodine">
+    <div class="page-header header-iodine">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">High in Iodine</span>
+      <h2>Iodine-Rich Recipes</h2>
+      <p>Fuel your thyroid with ocean-fresh flavours</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iodine"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-iodine">Iodine</span>
+          </div>
+          <h3>Garlic Butter Cod</h3>
+          <p class="desc">Flaky white cod in a simple garlic-lemon butter — quick and elegant.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 cod fillets</li>
+            <li>2 tbsp butter</li>
+            <li>2 cloves garlic, minced</li>
+            <li>Juice of 1 lemon</li>
+            <li>Fresh parsley, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Melt butter over medium heat. Season cod with salt and pepper.</li>
+            <li>Cook cod 3-4 min each side until flaky. Add garlic in the last minute.</li>
+            <li>Squeeze lemon, spoon pan butter on top and garnish with parsley.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iodine"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-iodine">Iodine</span>
+          </div>
+          <h3>Seaweed & Cucumber Salad</h3>
+          <p class="desc">A light Japanese-style salad with wakame seaweed and sesame dressing.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>10g dried wakame seaweed</li>
+            <li>1 cucumber, thinly sliced</li>
+            <li>1 tbsp rice vinegar</li>
+            <li>1 tsp soy sauce + 1 tsp sesame oil</li>
+            <li>Sesame seeds, pinch of sugar</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Soak wakame in warm water 5 minutes, then drain and squeeze dry.</li>
+            <li>Whisk rice vinegar, soy sauce, sesame oil and sugar.</li>
+            <li>Toss wakame and cucumber in the dressing. Top with sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iodine"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-iodine">Iodine</span>
+          </div>
+          <h3>Prawn & Nori Rice Bowl</h3>
+          <p class="desc">Warm rice topped with soy-glazed prawns and crispy nori strips.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 cup cooked rice</li>
+            <li>150g cooked prawns</li>
+            <li>2 nori sheets, cut into strips</li>
+            <li>1 tbsp soy sauce + 1 tsp mirin</li>
+            <li>Spring onions, sesame seeds, avocado</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Warm prawns with soy sauce and mirin for 2 minutes.</li>
+            <li>Serve over warm rice with sliced avocado.</li>
+            <li>Top with nori strips, spring onions and sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-iodine"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 10 min</span>
+            <span class="card-tag tag-iodine">Iodine</span>
+          </div>
+          <h3>Creamy Haddock with Spinach</h3>
+          <p class="desc">Smoked haddock poached in cream with wilted spinach — rich in iodine.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 smoked haddock fillets</li>
+            <li>150ml single cream</li>
+            <li>2 cups spinach</li>
+            <li>1 tbsp butter, pinch of nutmeg</li>
+            <li>Salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Place haddock in a pan, pour cream over. Simmer gently 6-7 minutes.</li>
+            <li>Remove fish. Add butter and spinach to cream, stir until wilted.</li>
+            <li>Season with nutmeg, salt and pepper. Serve fish on creamy spinach.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== OMEGA-3 PAGE ===== -->
+  <div class="recipe-page" id="page-omega">
+    <div class="page-header header-omega">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <span class="badge">High in Omega-3</span>
+      <h2>Omega-3 Rich Recipes</h2>
+      <p>Healthy fats for brain, heart and joints</p>
+    </div>
+    <div class="recipe-grid">
+
+      <div class="recipe-card">
+        <div class="card-banner banner-omega"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 8 min</span>
+            <span class="card-tag tag-omega">Omega-3</span>
+          </div>
+          <h3>Teriyaki Salmon Rice Bowl</h3>
+          <p class="desc">Glazed salmon flaked over warm rice with avocado and pickled ginger.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 salmon fillet</li>
+            <li>2 tbsp teriyaki sauce</li>
+            <li>1 cup cooked rice</li>
+            <li>1/2 avocado, sliced</li>
+            <li>Pickled ginger, spring onion, sesame seeds</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Pan-sear salmon 3 min each side. Brush teriyaki in the last minute.</li>
+            <li>Flake salmon over warm rice.</li>
+            <li>Top with avocado, pickled ginger, spring onion and sesame seeds.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-omega"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-omega">Omega-3</span>
+          </div>
+          <h3>Smoked Mackerel Pate on Toast</h3>
+          <p class="desc">Rich, smoky mackerel whipped with cream cheese — an omega-3 powerhouse.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>2 smoked mackerel fillets, flaked</li>
+            <li>3 tbsp cream cheese</li>
+            <li>Juice of 1 lemon</li>
+            <li>1 tsp horseradish (optional)</li>
+            <li>Toast, fresh dill, black pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Mash mackerel with cream cheese, lemon juice and horseradish.</li>
+            <li>Season with black pepper.</li>
+            <li>Spread on toast and garnish with fresh dill.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-omega"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 5 min</span>
+            <span class="card-tag tag-omega">Omega-3</span>
+          </div>
+          <h3>Chia Seed Pudding</h3>
+          <p class="desc">A creamy overnight-style pudding that only takes minutes to prep.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>3 tbsp chia seeds</li>
+            <li>1 cup milk (or coconut/almond milk)</li>
+            <li>1 tbsp honey or maple syrup</li>
+            <li>1/2 tsp vanilla extract</li>
+            <li>Toppings: berries, nuts, coconut flakes</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Stir chia seeds, milk, honey and vanilla in a bowl.</li>
+            <li>Let sit 5 minutes, stirring once halfway to prevent clumps.</li>
+            <li>Top with berries, nuts and coconut. (Or refrigerate overnight for thicker set.)</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-omega"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 6 min</span>
+            <span class="card-tag tag-omega">Omega-3</span>
+          </div>
+          <h3>Walnut & Flaxseed Banana Smoothie</h3>
+          <p class="desc">A thick, nutty smoothie loaded with plant-based omega-3s.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 banana</li>
+            <li>1/4 cup walnuts</li>
+            <li>1 tbsp ground flaxseed</li>
+            <li>1 cup milk of choice</li>
+            <li>1 tbsp honey, pinch of cinnamon</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Add all ingredients to a blender.</li>
+            <li>Blend on high until smooth and creamy.</li>
+            <li>Pour into a glass and dust with cinnamon.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="recipe-card">
+        <div class="card-banner banner-omega"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-time">&#9201; 7 min</span>
+            <span class="card-tag tag-omega">Omega-3</span>
+          </div>
+          <h3>Sardine & Avocado Smash</h3>
+          <p class="desc">Mashed avocado and sardines on toast — a double dose of healthy fats.</p>
+          <p class="ingredients-label">Ingredients</p>
+          <ul>
+            <li>1 tin sardines in olive oil</li>
+            <li>1 ripe avocado</li>
+            <li>2 slices bread</li>
+            <li>Juice of 1/2 lemon</li>
+            <li>Chilli flakes, salt & pepper</li>
+          </ul>
+          <p class="steps-label">Steps</p>
+          <ol>
+            <li>Toast bread. Mash avocado with lemon juice, salt and pepper.</li>
+            <li>Spread avocado on toast.</li>
+            <li>Top with sardines, a drizzle of their oil, and chilli flakes.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== SHOPPING LIST PAGE ===== -->
+  <div class="shopping-page" id="page-shopping">
+    <div class="shopping-header">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <h2>Shopping List</h2>
+      <p>Add ingredients you need to buy, then email the list to yourself</p>
+    </div>
+
+    <div class="shopping-content">
+
+      <!-- Ingredients List -->
+      <div class="shopping-section">
+        <h3>Ingredients to Buy</h3>
+        <p>Add items to your shopping list and tick them off as you go</p>
+
+        <div class="add-item-row">
+          <input type="text" id="newItemInput" placeholder="e.g. 2 cans of chickpeas" onkeydown="if(event.key==='Enter')addItem()">
+          <button onclick="addItem()">+ Add</button>
+        </div>
+
+        <ul class="item-list" id="itemList">
+        </ul>
+        <div class="empty-list" id="emptyMsg">Your list is empty — add some ingredients above</div>
+
+        <div class="item-count" id="itemCount"></div>
+
+        <div class="clear-all-row">
+          <button class="clear-all-btn" onclick="clearAllItems()">Clear All</button>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="shopping-section">
+        <h3>Notes</h3>
+        <p>Any extra notes or reminders for your shop</p>
+        <textarea class="notes-area" id="shoppingNotes" placeholder="e.g. Check if the supermarket has fresh dill, buy extra limes for the weekend..."></textarea>
+      </div>
+
+      <!-- Email to yourself -->
+      <div class="shopping-section">
+        <h3>Email Your List</h3>
+        <p>Enter your email and we'll open your email client with your full shopping list ready to send</p>
+        <div class="email-row">
+          <input type="email" id="emailInput" placeholder="your@email.com">
+          <button onclick="sendList()">Send to Email</button>
+        </div>
+        <div class="send-success" id="sendSuccess">Your email client has been opened with your shopping list. Just hit send!</div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+  <!-- ===== MEAL TIMETABLE PAGE ===== -->
+  <div class="timetable-page" id="page-timetable">
+    <div class="timetable-header">
+      <div class="back-btn" onclick="showHome()">&larr; Back to Home</div>
+      <h2>Meal Timetable</h2>
+      <p>Plan when you'll make and eat breakfast, lunch and dinner this week</p>
+    </div>
+
+    <div class="timetable-content">
+
+      <div class="tt-save-msg" id="ttSaveMsg">Timetable saved!</div>
+
+      <div class="tt-legend">
+        <div class="tt-legend-item"><div class="tt-legend-dot legend-breakfast"></div> Breakfast</div>
+        <div class="tt-legend-item"><div class="tt-legend-dot legend-lunch"></div> Lunch</div>
+        <div class="tt-legend-item"><div class="tt-legend-dot legend-dinner"></div> Dinner</div>
+      </div>
+
+      <div class="timetable-card">
+        <table class="timetable-grid">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Breakfast</th>
+              <th>Lunch</th>
+              <th>Dinner</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody">
+          </tbody>
+        </table>
+
+        <div class="timetable-actions">
+          <button class="tt-btn tt-btn-clear" onclick="clearTimetable()">Clear All</button>
+          <button class="tt-btn tt-btn-save" onclick="saveTimetable()">Save Timetable</button>
+        </div>
+      </div>
+
+      <div class="shopping-section">
+        <h3>Email Your Timetable</h3>
+        <p>Send a copy of your meal plan to your inbox</p>
+        <div class="email-row">
+          <input type="email" id="ttEmailInput" placeholder="your@email.com">
+          <button onclick="sendTimetable()">Send</button>
+        </div>
+        <div class="send-success" id="ttSendSuccess">Your email client has been opened with your meal timetable. Just hit send!</div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
+</div>
+
+<script>
+  // ===== AUTH & API =====
+  let authToken = localStorage.getItem('authToken');
+  let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+  async function apiFetch(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+    const res = await fetch(path, { ...options, headers });
+    if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+    return res.json();
+  }
+
+  function isLoggedIn() { return !!authToken; }
+
+  let authMode = 'login';
+
+  function updateAuthUI() {
+    const el = document.getElementById('authContent');
+    if (isLoggedIn() && currentUser) {
+      el.innerHTML = `
+        <div class="auth-logged-in">
+          <div class="auth-email">${currentUser.email}</div>
+          <button onclick="logout()">Log Out</button>
+        </div>`;
+    } else {
+      const isLogin = authMode === 'login';
+      el.innerHTML = `
+        <div id="authError" class="auth-error" style="display:none"></div>
+        <div class="auth-form">
+          <input type="email" id="authEmail" placeholder="Email">
+          <input type="password" id="authPassword" placeholder="Password" onkeydown="if(event.key==='Enter')submitAuth()">
+          <button onclick="submitAuth()">${isLogin ? 'Log In' : 'Sign Up'}</button>
+          <div class="auth-toggle" onclick="toggleAuthMode()">
+            ${isLogin ? 'Need an account? Sign up' : 'Have an account? Log in'}
+          </div>
+        </div>`;
+    }
+  }
+
+  function toggleAuthMode() {
+    authMode = authMode === 'login' ? 'signup' : 'login';
+    updateAuthUI();
+  }
+
+  async function submitAuth() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const errEl = document.getElementById('authError');
+
+    if (!email || !password) {
+      errEl.textContent = 'Please fill in both fields';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    try {
+      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/signup';
+      const data = await apiFetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+
+      if (data.error) {
+        errEl.textContent = data.error;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      authToken = data.token;
+      currentUser = data.user;
+      localStorage.setItem('authToken', authToken);
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      updateAuthUI();
+    } catch (err) {
+      errEl.textContent = 'Something went wrong. Please try again.';
+      errEl.style.display = 'block';
+    }
+  }
+
+  function logout() {
+    authToken = null;
+    currentUser = null;
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    shoppingItems = [];
+    timetableData = {};
+    updateAuthUI();
+  }
+
+  // ===== NAV =====
+  const allPages = ['vegan','vegetarian','glutenfree','iron','calcium','zinc','iodine','omega'];
+  let shoppingItems = [];
+
+  function saveItemsLocal() {
+    localStorage.setItem('shoppingItems', JSON.stringify(shoppingItems));
+  }
+
+  function hideAll() {
+    document.getElementById('homePage').style.display = 'none';
+    document.getElementById('page-shopping').classList.remove('visible');
+    document.getElementById('page-timetable').classList.remove('visible');
+    allPages.forEach(p => {
+      document.getElementById('page-' + p).classList.remove('visible');
+    });
+    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+  }
+
+  function showHome() {
+    hideAll();
+    document.getElementById('homePage').style.display = 'flex';
+    closeSidebarMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showPage(section) {
+    hideAll();
+    document.getElementById('page-' + section).classList.add('visible');
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      if (item.dataset.section === section) {
+        item.classList.add('active');
+      }
+    });
+    closeSidebarMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function showShopping() {
+    hideAll();
+    document.getElementById('page-shopping').classList.add('visible');
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      if (item.dataset.section === 'shopping') item.classList.add('active');
+    });
+    closeSidebarMobile();
+
+    if (isLoggedIn()) {
+      try {
+        const data = await apiFetch('/api/shopping');
+        shoppingItems = data.items;
+        document.getElementById('shoppingNotes').value = data.notes;
+      } catch { /* fallback below */ }
+    } else {
+      shoppingItems = JSON.parse(localStorage.getItem('shoppingItems') || '[]');
+      document.getElementById('shoppingNotes').value = localStorage.getItem('shoppingNotes') || '';
+    }
+    renderItems();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function addItem() {
+    const input = document.getElementById('newItemInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    if (isLoggedIn()) {
+      try {
+        const item = await apiFetch('/api/shopping/items', { method: 'POST', body: JSON.stringify({ text }) });
+        shoppingItems.push(item);
+      } catch { shoppingItems.push({ text, checked: false }); }
+    } else {
+      shoppingItems.push({ text, checked: false });
+      saveItemsLocal();
+    }
+    input.value = '';
+    input.focus();
+    renderItems();
+  }
+
+  async function toggleItem(index) {
+    shoppingItems[index].checked = !shoppingItems[index].checked;
+    if (isLoggedIn() && shoppingItems[index].id) {
+      try { await apiFetch('/api/shopping/items/' + shoppingItems[index].id, { method: 'PATCH', body: JSON.stringify({ checked: shoppingItems[index].checked }) }); } catch {}
+    } else {
+      saveItemsLocal();
+    }
+    renderItems();
+  }
+
+  async function removeItem(index) {
+    if (isLoggedIn() && shoppingItems[index].id) {
+      try { await apiFetch('/api/shopping/items/' + shoppingItems[index].id, { method: 'DELETE' }); } catch {}
+    }
+    shoppingItems.splice(index, 1);
+    if (!isLoggedIn()) saveItemsLocal();
+    renderItems();
+  }
+
+  async function clearAllItems() {
+    if (shoppingItems.length === 0) return;
+    if (isLoggedIn()) {
+      try { await apiFetch('/api/shopping/items', { method: 'DELETE' }); } catch {}
+    }
+    shoppingItems = [];
+    document.getElementById('shoppingNotes').value = '';
+    if (!isLoggedIn()) { saveItemsLocal(); localStorage.removeItem('shoppingNotes'); }
+    renderItems();
+  }
+
+  function renderItems() {
+    const list = document.getElementById('itemList');
+    const emptyMsg = document.getElementById('emptyMsg');
+    const countEl = document.getElementById('itemCount');
+
+    list.innerHTML = '';
+
+    if (shoppingItems.length === 0) {
+      emptyMsg.style.display = 'block';
+      countEl.textContent = '';
+      return;
+    }
+
+    emptyMsg.style.display = 'none';
+    const checkedCount = shoppingItems.filter(i => i.checked).length;
+    countEl.textContent = checkedCount + ' of ' + shoppingItems.length + ' items ticked off';
+
+    shoppingItems.forEach((item, i) => {
+      const li = document.createElement('li');
+      if (item.checked) li.classList.add('checked');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = item.checked;
+      cb.onchange = () => toggleItem(i);
+
+      const span = document.createElement('span');
+      span.textContent = item.text;
+
+      const btn = document.createElement('button');
+      btn.className = 'remove-btn';
+      btn.innerHTML = '&times;';
+      btn.onclick = () => removeItem(i);
+
+      li.appendChild(cb);
+      li.appendChild(span);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  }
+
+  // Auto-save notes (debounced)
+  let notesTimer;
+  document.addEventListener('input', function(e) {
+    if (e.target.id === 'shoppingNotes') {
+      clearTimeout(notesTimer);
+      notesTimer = setTimeout(() => {
+        if (isLoggedIn()) {
+          apiFetch('/api/shopping/notes', { method: 'PUT', body: JSON.stringify({ notes: e.target.value }) }).catch(() => {});
+        } else {
+          localStorage.setItem('shoppingNotes', e.target.value);
+        }
+      }, 500);
+    }
+  });
+
+  async function sendList() {
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email) { document.getElementById('emailInput').focus(); return; }
+
+    const msg = document.getElementById('sendSuccess');
+
+    if (isLoggedIn()) {
+      try {
+        const result = await apiFetch('/api/email/shopping', { method: 'POST', body: JSON.stringify({ to: email }) });
+        msg.textContent = result.error ? result.error : 'Shopping list emailed successfully!';
+      } catch { msg.textContent = 'Failed to send. Please try again.'; }
+    } else {
+      // Fallback to mailto
+      let body = 'SHOPPING LIST\n=============\n\n';
+      shoppingItems.forEach(item => { body += (item.checked ? '[x] ' : '[ ] ') + item.text + '\n'; });
+      const notes = document.getElementById('shoppingNotes').value.trim();
+      if (notes) body += '\n\nNOTES\n=====\n' + notes + '\n';
+      body += '\n\n---\nSent from Quick & Healthy Recipes';
+      window.open('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('My Shopping List - Quick & Healthy Recipes') + '&body=' + encodeURIComponent(body), '_blank');
+      msg.textContent = 'Your email client has been opened with your shopping list.';
+    }
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 5000);
+  }
+
+  // ===== TIMETABLE =====
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const dayShort = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const meals = ['breakfast','lunch','dinner'];
+  let timetableData = {};
+
+  function buildTimetable() {
+    const tbody = document.getElementById('timetableBody');
+    tbody.innerHTML = '';
+
+    days.forEach((day, i) => {
+      const tr = document.createElement('tr');
+
+      // Day cell
+      const dayTd = document.createElement('td');
+      dayTd.innerHTML = '<div class="day-label">' + day + '<span>' + dayShort[i] + '</span></div>';
+      tr.appendChild(dayTd);
+
+      // Meal cells
+      meals.forEach(meal => {
+        const td = document.createElement('td');
+        td.className = 'meal-cell col-' + meal;
+
+        const key = day + '_' + meal;
+        const saved = timetableData[key] || {};
+
+        const input = document.createElement('textarea');
+        input.className = 'meal-input';
+        input.placeholder = 'What are you having?';
+        input.rows = 1;
+        input.value = saved.dish || '';
+        input.dataset.key = key;
+        input.dataset.field = 'dish';
+        input.oninput = function() { autoGrow(this); };
+
+        const timeInput = document.createElement('input');
+        timeInput.type = 'time';
+        timeInput.className = 'meal-time';
+        timeInput.value = saved.time || '';
+        timeInput.dataset.key = key;
+        timeInput.dataset.field = 'time';
+
+        td.appendChild(input);
+        td.appendChild(timeInput);
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  function autoGrow(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  async function saveTimetable() {
+    const data = {};
+    document.querySelectorAll('.meal-input').forEach(input => {
+      const key = input.dataset.key;
+      if (!data[key]) data[key] = {};
+      data[key].dish = input.value;
+    });
+    document.querySelectorAll('.meal-time').forEach(input => {
+      const key = input.dataset.key;
+      if (!data[key]) data[key] = {};
+      data[key].time = input.value;
+    });
+    timetableData = data;
+
+    if (isLoggedIn()) {
+      try { await apiFetch('/api/timetable', { method: 'PUT', body: JSON.stringify(data) }); } catch {}
+    } else {
+      localStorage.setItem('timetableData', JSON.stringify(data));
+    }
+
+    const msg = document.getElementById('ttSaveMsg');
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 3000);
+  }
+
+  async function clearTimetable() {
+    timetableData = {};
+    if (isLoggedIn()) {
+      try { await apiFetch('/api/timetable', { method: 'DELETE' }); } catch {}
+    } else {
+      localStorage.removeItem('timetableData');
+    }
+    buildTimetable();
+  }
+
+  async function showTimetable() {
+    hideAll();
+    document.getElementById('page-timetable').classList.add('visible');
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      if (item.dataset.section === 'timetable') item.classList.add('active');
+    });
+    closeSidebarMobile();
+
+    if (isLoggedIn()) {
+      try { timetableData = await apiFetch('/api/timetable'); } catch {}
+    } else {
+      timetableData = JSON.parse(localStorage.getItem('timetableData') || '{}');
+    }
+    buildTimetable();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function sendTimetable() {
+    const email = document.getElementById('ttEmailInput').value.trim();
+    if (!email) { document.getElementById('ttEmailInput').focus(); return; }
+
+    await saveTimetable();
+    const msg = document.getElementById('ttSendSuccess');
+
+    if (isLoggedIn()) {
+      try {
+        const result = await apiFetch('/api/email/timetable', { method: 'POST', body: JSON.stringify({ to: email }) });
+        msg.textContent = result.error ? result.error : 'Meal timetable emailed successfully!';
+      } catch { msg.textContent = 'Failed to send. Please try again.'; }
+    } else {
+      let body = 'MEAL TIMETABLE\n==============\n\n';
+      days.forEach(day => {
+        body += day.toUpperCase() + '\n';
+        meals.forEach(meal => {
+          const key = day + '_' + meal;
+          const saved = timetableData[key] || {};
+          const dish = saved.dish || '(not set)';
+          const time = saved.time || '';
+          const label = meal.charAt(0).toUpperCase() + meal.slice(1);
+          body += '  ' + label + ': ' + dish;
+          if (time) body += ' at ' + time;
+          body += '\n';
+        });
+        body += '\n';
+      });
+      body += '---\nSent from Quick & Healthy Recipes';
+      window.open('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('My Meal Timetable - Quick & Healthy Recipes') + '&body=' + encodeURIComponent(body), '_blank');
+      msg.textContent = 'Your email client has been opened with your meal timetable.';
+    }
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 5000);
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+  }
+
+  function closeSidebarMobile() {
+    if (window.innerWidth <= 768) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+  }
+
+  // Init auth UI on load
+  updateAuthUI();
+</script>
+
+</body>
+</html>
