@@ -1005,6 +1005,144 @@
   .col-lunch { background: transparent; }
   .col-dinner { background: transparent; }
 
+  /* ===== GUIDE PAGE ===== */
+  .guide-page {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.4s ease;
+  }
+  .guide-page.visible { display: flex; }
+
+  .guide-content {
+    padding: 50px 60px;
+    max-width: 760px;
+  }
+  .guide-content h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--black);
+    margin-bottom: 16px;
+    margin-top: 48px;
+  }
+  .guide-content h3:first-child { margin-top: 0; }
+  .guide-content p {
+    font-size: 0.84rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+  .guide-content strong {
+    font-weight: 500;
+    color: var(--black);
+  }
+  .guide-content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    border-left: 1px solid var(--border);
+    padding-left: 20px;
+  }
+  .guide-content ul li {
+    font-size: 0.84rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.9;
+    padding: 2px 0;
+  }
+  .guide-content ul li strong {
+    font-weight: 500;
+  }
+
+  .guide-callout {
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin: 28px 0;
+  }
+  .guide-callout p {
+    margin-bottom: 0;
+  }
+  .guide-callout .callout-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .calorie-calculator {
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    margin: 28px 0;
+  }
+  .calorie-calculator .calc-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .calc-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+  .calc-row label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text);
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .calc-row input, .calc-row select {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    outline: none;
+    background: var(--bg);
+  }
+  .calc-row input:focus, .calc-row select:focus { border-color: var(--black); }
+  .calc-btn {
+    padding: 11px 28px;
+    background: var(--black);
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.15s;
+  }
+  .calc-btn:hover { opacity: 0.7; }
+  .calc-result {
+    display: none;
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+  }
+  .calc-result p {
+    margin-bottom: 6px;
+  }
+  .calc-result .result-number {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--black);
+    letter-spacing: -0.5px;
+  }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); }
@@ -1070,6 +1208,15 @@
     </div>
     <div class="sidebar-item" data-section="omega" onclick="showPage('omega')">
       <span class="sidebar-dot dot-omega"></span> High in Omega-3
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guides</div>
+    <div class="sidebar-item" data-section="weightloss" onclick="showGuide()">
+      <span class="sidebar-dot dot-shopping"></span> Weight Loss
     </div>
   </div>
 
@@ -2316,6 +2463,134 @@
     <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
   </div>
 
+  <!-- ===== WEIGHT LOSS GUIDE ===== -->
+  <div class="guide-page" id="page-weightloss">
+    <div class="page-header" style="background:var(--bg); color:var(--black); border-bottom:1px solid var(--border);">
+      <div class="back-btn" onclick="showHome()" style="color:var(--text-light); background:none; padding:0;">&larr; Back to Home</div>
+      <span class="badge" style="background:none; color:var(--text-muted);">Guide</span>
+      <h2>Weight Loss & Calorie Deficit</h2>
+      <p style="color:var(--text-light);">A simple, science-backed approach to losing weight healthily</p>
+    </div>
+
+    <div class="guide-content">
+
+      <h3>What is a calorie deficit?</h3>
+      <p>A <strong>calorie deficit</strong> means eating fewer calories than your body burns in a day. It's the only proven way to lose weight — no fad diets, no magic pills. When you eat less energy than you use, your body turns to stored fat for fuel, and you lose weight over time.</p>
+
+      <p>Think of it like a bank account. If you spend more than you deposit, your balance goes down. Calories work the same way — burn more than you eat, and your body dips into its fat reserves.</p>
+
+      <div class="guide-callout">
+        <p class="callout-label">The simple equation</p>
+        <p><strong>Calories In &lt; Calories Out = Weight Loss</strong></p>
+        <p>A deficit of roughly <strong>500 calories per day</strong> leads to about 0.5kg (1lb) of fat loss per week. This is a safe, sustainable rate.</p>
+      </div>
+
+      <h3>How many calories do you need?</h3>
+      <p>Everyone's different. Your daily calorie needs depend on your <strong>age, sex, height, weight</strong> and <strong>activity level</strong>. This is called your <strong>Total Daily Energy Expenditure (TDEE)</strong>.</p>
+
+      <p>Use the calculator below to estimate yours:</p>
+
+      <div class="calorie-calculator">
+        <p class="calc-label">Calorie deficit calculator</p>
+        <div class="calc-row">
+          <label>Sex</label>
+          <select id="calcSex">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="calc-row">
+          <label>Age</label>
+          <input type="number" id="calcAge" placeholder="e.g. 25" min="15" max="80">
+        </div>
+        <div class="calc-row">
+          <label>Height (cm)</label>
+          <input type="number" id="calcHeight" placeholder="e.g. 170" min="120" max="220">
+        </div>
+        <div class="calc-row">
+          <label>Weight (kg)</label>
+          <input type="number" id="calcWeight" placeholder="e.g. 70" min="30" max="200">
+        </div>
+        <div class="calc-row">
+          <label>Activity</label>
+          <select id="calcActivity">
+            <option value="1.2">Sedentary (desk job, little exercise)</option>
+            <option value="1.375">Lightly active (1-3 days/week)</option>
+            <option value="1.55">Moderately active (3-5 days/week)</option>
+            <option value="1.725">Very active (6-7 days/week)</option>
+          </select>
+        </div>
+        <button class="calc-btn" onclick="calculateCalories()">Calculate</button>
+
+        <div class="calc-result" id="calcResult">
+          <p class="callout-label">Your estimated daily calories</p>
+          <p><span class="result-number" id="resultMaintain"></span></p>
+          <p style="font-size:0.78rem; color:var(--text-light); margin-top:4px;">To maintain your current weight</p>
+          <br>
+          <p><span class="result-number" id="resultDeficit"></span></p>
+          <p style="font-size:0.78rem; color:var(--text-light); margin-top:4px;">To lose ~0.5kg per week (500 cal deficit)</p>
+        </div>
+      </div>
+
+      <h3>How to create a calorie deficit</h3>
+      <p>You don't have to starve yourself. Small, sustainable changes add up:</p>
+      <ul>
+        <li><strong>Eat more protein</strong> — it keeps you full for longer and preserves muscle. Think eggs, chicken, fish, lentils, Greek yoghurt.</li>
+        <li><strong>Fill up on vegetables</strong> — they're low in calories but high in volume, so you feel satisfied without overeating.</li>
+        <li><strong>Cook at home</strong> — restaurant meals often have double the calories you'd expect. All the recipes on this site are under 500 calories.</li>
+        <li><strong>Watch liquid calories</strong> — juices, lattes, fizzy drinks and alcohol add up fast. Swap for water, black coffee or herbal tea.</li>
+        <li><strong>Don't skip meals</strong> — this leads to overeating later. Eat regular, balanced meals instead.</li>
+        <li><strong>Move more</strong> — even a 30-minute walk burns 150-200 calories. Take the stairs, walk to the shops, stretch between work.</li>
+      </ul>
+
+      <h3>What NOT to do</h3>
+      <ul>
+        <li><strong>Don't cut too aggressively</strong> — going below 1200 calories (women) or 1500 calories (men) can slow your metabolism, cause fatigue and lead to muscle loss.</li>
+        <li><strong>Don't eliminate entire food groups</strong> — carbs aren't the enemy. You need a balance of protein, carbs and fats.</li>
+        <li><strong>Don't rely on the scale alone</strong> — weight fluctuates daily due to water, salt and digestion. Look at the trend over weeks, not days.</li>
+        <li><strong>Don't aim for perfection</strong> — one bad meal doesn't ruin anything. What matters is what you do consistently over time.</li>
+      </ul>
+
+      <h3>A sample day in a calorie deficit</h3>
+      <p>Here's what a ~1,500 calorie day could look like using recipes from this site:</p>
+
+      <div class="guide-callout">
+        <p class="callout-label">Sample meal plan (~1,500 cal)</p>
+        <p><strong>Breakfast:</strong> Berry Coconut Smoothie Bowl — 350 cal</p>
+        <p><strong>Lunch:</strong> Tuna & White Bean Salad — 310 cal</p>
+        <p><strong>Snack:</strong> Dark Chocolate & Pumpkin Seed Trail Mix — 290 cal</p>
+        <p><strong>Dinner:</strong> Lemon Herb Salmon — 360 cal</p>
+        <p><strong>Total: 1,310 cal</strong> — leaves room for a coffee with milk or a piece of fruit.</p>
+      </div>
+
+      <h3>How long does it take?</h3>
+      <p>With a 500-calorie daily deficit, expect to lose roughly:</p>
+      <ul>
+        <li><strong>1 month:</strong> ~2kg (4.4lbs)</li>
+        <li><strong>3 months:</strong> ~6kg (13lbs)</li>
+        <li><strong>6 months:</strong> ~12kg (26lbs)</li>
+      </ul>
+      <p>Results vary based on starting weight, consistency and activity level. The heavier you are, the faster initial results tend to be. Be patient — sustainable weight loss is a marathon, not a sprint.</p>
+
+      <h3>Tips for staying consistent</h3>
+      <ul>
+        <li><strong>Plan your meals</strong> — use the Meal Timetable on this site to plan your week ahead.</li>
+        <li><strong>Prep ingredients</strong> — use the Shopping List to stay organised.</li>
+        <li><strong>Track loosely</strong> — you don't need to count every calorie forever. Just build awareness of roughly what's in your food.</li>
+        <li><strong>Allow treats</strong> — a 500 cal deficit still leaves room for things you enjoy. It's about balance, not restriction.</li>
+        <li><strong>Focus on how you feel</strong> — more energy, better sleep and improved mood are signs it's working, even before the scale moves.</li>
+      </ul>
+
+      <div class="guide-callout">
+        <p class="callout-label">Remember</p>
+        <p>Weight loss is simple but not always easy. A calorie deficit is the science — but <strong>patience, consistency and self-compassion</strong> are what make it work long-term. Every healthy meal you make is a step in the right direction.</p>
+      </div>
+
+    </div>
+
+    <div class="page-footer">Quick & Healthy Recipes &mdash; All recipes under 10 minutes</div>
+  </div>
+
   <!-- ===== SHOPPING LIST PAGE ===== -->
   <div class="shopping-page" id="page-shopping">
     <div class="shopping-header">
@@ -2437,6 +2712,7 @@
     document.getElementById('homePage').style.display = 'none';
     document.getElementById('page-shopping').classList.remove('visible');
     document.getElementById('page-timetable').classList.remove('visible');
+    document.getElementById('page-weightloss').classList.remove('visible');
     allPages.forEach(p => {
       document.getElementById('page-' + p).classList.remove('visible');
     });
@@ -2722,6 +2998,41 @@
     }
     msg.style.display = 'block';
     setTimeout(() => { msg.style.display = 'none'; }, 5000);
+  }
+
+  function showGuide() {
+    hideAll();
+    document.getElementById('page-weightloss').classList.add('visible');
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      if (item.dataset.section === 'weightloss') item.classList.add('active');
+    });
+    closeSidebarMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function calculateCalories() {
+    const sex = document.getElementById('calcSex').value;
+    const age = parseFloat(document.getElementById('calcAge').value);
+    const height = parseFloat(document.getElementById('calcHeight').value);
+    const weight = parseFloat(document.getElementById('calcWeight').value);
+    const activity = parseFloat(document.getElementById('calcActivity').value);
+
+    if (!age || !height || !weight) return;
+
+    // Mifflin-St Jeor equation
+    let bmr;
+    if (sex === 'male') {
+      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    const tdee = Math.round(bmr * activity);
+    const deficit = Math.round(tdee - 500);
+
+    document.getElementById('resultMaintain').textContent = tdee.toLocaleString() + ' cal';
+    document.getElementById('resultDeficit').textContent = deficit.toLocaleString() + ' cal';
+    document.getElementById('calcResult').style.display = 'block';
   }
 
   function toggleSidebar() {
