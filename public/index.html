@@ -1180,6 +1180,35 @@
   .saved-plans-list li .plan-actions button { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 6px 14px; font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
   .saved-plans-list li .plan-actions button:hover { border-color: var(--black); color: var(--black); }
 
+  /* ===== AUTH UI ===== */
+  .auth-form { padding: 0 28px 16px; }
+  .auth-form input {
+    width: 100%; padding: 9px 12px; border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06); color: #fff; font-family: 'Inter', sans-serif;
+    font-size: 0.76rem; font-weight: 300; outline: none; margin-bottom: 8px;
+  }
+  .auth-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .auth-form input:focus { border-color: rgba(255,255,255,0.3); }
+  .auth-form button {
+    width: 100%; padding: 9px; background: rgba(255,255,255,0.12); color: #fff; border: none;
+    font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-bottom: 6px;
+  }
+  .auth-form button:hover { background: rgba(255,255,255,0.2); }
+  .auth-toggle {
+    font-size: 0.68rem; color: rgba(255,255,255,0.35); text-align: center; cursor: pointer; padding: 4px 0;
+  }
+  .auth-toggle:hover { color: rgba(255,255,255,0.6); }
+  .auth-error { font-size: 0.7rem; color: #e88; padding: 0 28px 8px; display: none; }
+  .auth-logged-in { padding: 0 28px 16px; }
+  .auth-logged-in .auth-email { font-size: 0.74rem; color: rgba(255,255,255,0.6); margin-bottom: 10px; word-break: break-all; }
+  .auth-logged-in button {
+    background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);
+    padding: 7px 16px; font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer;
+  }
+  .auth-logged-in button:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.8); }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); }
@@ -1276,6 +1305,13 @@
     <div class="sidebar-item" data-section="mealplangen" onclick="showMealPlanGen()">
       <span class="sidebar-dot dot-shopping"></span> Meal Plan Generator
     </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Account</div>
+    <div id="authContent"></div>
   </div>
 </aside>
 
@@ -2845,6 +2881,79 @@
 </div>
 
 <script>
+  // ===== AUTH & API =====
+  let authToken = localStorage.getItem('authToken');
+  let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+  function isLoggedIn() { return !!authToken; }
+
+  async function apiFetch(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (authToken) headers['Authorization'] = 'Bearer ' + authToken;
+    const res = await fetch(path, { ...options, headers });
+    if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+    return res.json();
+  }
+
+  let authMode = 'login';
+
+  function updateAuthUI() {
+    const el = document.getElementById('authContent');
+    if (!el) return;
+    if (isLoggedIn() && currentUser) {
+      el.innerHTML =
+        '<div class="auth-logged-in">' +
+          '<div class="auth-email">' + currentUser.email + '</div>' +
+          '<button onclick="logout()">Log Out</button>' +
+        '</div>';
+    } else {
+      const isLogin = authMode === 'login';
+      el.innerHTML =
+        '<div class="auth-error" id="authError"></div>' +
+        '<div class="auth-form">' +
+          '<input type="email" id="authEmail" placeholder="Email">' +
+          '<input type="password" id="authPassword" placeholder="Password" onkeydown="if(event.key===\'Enter\')submitAuth()">' +
+          '<button onclick="submitAuth()">' + (isLogin ? 'Log In' : 'Sign Up') + '</button>' +
+          '<div class="auth-toggle" onclick="toggleAuthMode()">' +
+            (isLogin ? 'Need an account? Sign up' : 'Have an account? Log in') +
+          '</div>' +
+        '</div>';
+    }
+  }
+
+  function toggleAuthMode() {
+    authMode = authMode === 'login' ? 'signup' : 'login';
+    updateAuthUI();
+  }
+
+  async function submitAuth() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const errEl = document.getElementById('authError');
+    if (!email || !password) { errEl.textContent = 'Please fill in both fields'; errEl.style.display = 'block'; return; }
+    try {
+      const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/signup';
+      const data = await apiFetch(endpoint, { method: 'POST', body: JSON.stringify({ email, password }) });
+      if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+      authToken = data.token;
+      currentUser = { id: data.userId, email: data.email };
+      localStorage.setItem('authToken', authToken);
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      updateAuthUI();
+    } catch (err) {
+      if (errEl) { errEl.textContent = 'Something went wrong. Try again.'; errEl.style.display = 'block'; }
+    }
+  }
+
+  function logout() {
+    authToken = null;
+    currentUser = null;
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    updateAuthUI();
+  }
+
+  // ===== NAV =====
   const allPages = ['vegan','vegetarian','glutenfree','iron','calcium','zinc','iodine','omega'];
   let shoppingItems = JSON.parse(localStorage.getItem('shoppingItems') || '[]');
 
@@ -3415,6 +3524,9 @@
       document.getElementById('sidebarOverlay').classList.remove('open');
     }
   }
+
+  // Init auth UI on load
+  updateAuthUI();
 </script>
 
 </body>
